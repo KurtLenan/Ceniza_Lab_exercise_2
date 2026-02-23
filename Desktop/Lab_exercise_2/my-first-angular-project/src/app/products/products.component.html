@@ -1,23 +1,53 @@
-<div class="products">
-  <div class="product-card" *ngFor="let item of products">
-    <img [src]="item.image" alt="{{item.name}}" />
+<div class="layout">
 
-    <h3>{{ item.name }}</h3>
-    <p>Price: ₱{{ item.price }}</p>
+  <div class="sidebar">
 
-    <p *ngIf="item.available; else outStock" class="available">
-      Available
-    </p>
+    <div class="sidebar-header" (click)="toggleCategories()">
+      ☰ Categories
+    </div>
 
-    <ng-template #outStock>
-      <p class="out">Out of Stock</p>
-    </ng-template>
+    <div class="sidebar-menu" *ngIf="showCategories">
 
-    <button 
-      (click)="addToCart(item)"
-      [disabled]="!item.available">
-      Add to Cart
-    </button>
+      <div class="sidebar-item" (click)="setCategory('All')">
+        All
+      </div>
+
+      <div class="sidebar-item" (click)="setCategory('Devices')">
+        Devices
+      </div>
+
+      <div class="sidebar-item" (click)="setCategory('Accessories')">
+        Accessories
+      </div>
+
+      <div class="sidebar-total">
+        Total Price: ₱{{ totalPrice }}
+      </div>
+
+    </div>
 
   </div>
+
+  <div class="products">
+    <div class="product-card" *ngFor="let item of filteredProducts">
+
+      <img [src]="item.image" alt="{{ item.name }}">
+
+      <h3>{{ item.name }}</h3>
+
+      <p>Price: ₱{{ item.price }}</p>
+
+      <p [ngClass]="item.available ? 'available' : 'out'">
+        {{ item.available ? 'Available' : 'Out of Stock' }}
+      </p>
+
+      <button 
+        (click)="addToCart(item)"
+        [disabled]="!item.available">
+        Add to Cart
+      </button>
+
+    </div>
+  </div>
+
 </div>
